@@ -1,5 +1,6 @@
 package com.blog.www.guideview;
 
+import android.graphics.Rect;
 import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,7 @@ public class GuideBuilder {
 
   private List<Component> mComponents = new ArrayList<Component>();
   private OnVisibilityChangedListener mOnVisibilityChangedListener;
+  private int tag=0;
 
   /**
    * 构造函数
@@ -54,6 +56,8 @@ public class GuideBuilder {
   public GuideBuilder() {
     mConfiguration = new Configuration();
   }
+
+
 
   /**
    * 设置蒙板透明度
@@ -234,6 +238,7 @@ public class GuideBuilder {
     return this;
   }
 
+
   /**
    * 设置遮罩可见状态变化时的监听回调
    */
@@ -245,6 +250,7 @@ public class GuideBuilder {
     mOnVisibilityChangedListener = onVisibilityChangedListener;
     return this;
   }
+
 
   /**
    * 设置遮罩系统是否可点击并处理点击事件
@@ -268,6 +274,21 @@ public class GuideBuilder {
       mConfiguration.mPadding = 0;
     }
     mConfiguration.mPadding = padding;
+    return this;
+  }
+
+  /**
+   * 设置自定义区域
+   *
+   * @return GuideBuilder
+   */
+  public GuideBuilder setTargetRect(Rect mRect) {
+    if (mBuilt) {
+      throw new BuildException("Already created. rebuild a new one.");
+    } else if (mRect == null) {
+      mConfiguration.mRect = null;
+    }
+    mConfiguration.mRect = mRect;
     return this;
   }
 
@@ -342,6 +363,8 @@ public class GuideBuilder {
     guide.setComponents(mComponents.toArray(components));
     guide.setConfiguration(mConfiguration);
     guide.setCallback(mOnVisibilityChangedListener);
+    guide.setTag(this.tag);
+    mComponents.clear();
     mComponents = null;
     mConfiguration = null;
     mOnVisibilityChangedListener = null;
@@ -349,6 +372,10 @@ public class GuideBuilder {
     return guide;
   }
 
+  public GuideBuilder setTag(int tag) {
+    this.tag = tag;
+    return this;
+  }
   /**
    * 遮罩可见发生变化时的事件监听
    *
@@ -360,4 +387,17 @@ public class GuideBuilder {
 
     void onDismiss();
   }
+
+  /**
+   * 遮罩自定义视图的事件监听
+   *
+   * @author Simon
+   */
+  public interface OverviewClcickListener {
+
+    void onClick(int type);
+
+  }
+
+
 }

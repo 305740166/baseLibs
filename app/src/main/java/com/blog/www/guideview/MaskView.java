@@ -259,8 +259,6 @@ class MaskView extends ViewGroup {
               mTargetRect.width() / 2, mEraser);
           break;
         case Component.DISPLAY:
-//          mEraserCanvas.drawCircle(mTargetRect.centerX(), mTargetRect.centerY(),
-//              mTargetRect.width() / 2, mEraser);
           break;
         default:
           mEraserCanvas.drawRoundRect(mTargetRect, mCorner, mCorner, mEraser);

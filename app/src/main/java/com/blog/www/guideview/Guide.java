@@ -2,6 +2,7 @@ package com.blog.www.guideview;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +11,21 @@ import android.view.animation.AnimationUtils;
 
 /**
  * 遮罩系统的封装 <br>
- * 外部需要调用{@link com.blog.www.guideview.GuideBuilder}来创建该实例，实例创建后调用
+ * 外部需要调用{@link GuideBuilder}来创建该实例，实例创建后调用
  * {@link #show(Activity)} 控制显示； 调用 {@link #dismiss()}让遮罩系统消失。 <br>
  *
  * Created by binIoter
  */
 public class Guide implements View.OnKeyListener, View.OnClickListener {
+
+  private String TAG="Guide";
+  private int tag=0;
+
   /**
    * Cannot initialize out of package <font
    * color=red>包内才可见，外部使用时必须调用GuideBuilder来创建.</font>
    *
-   * @see com.blog.www.guideview.GuideBuilder
+   * @see GuideBuilder
    */
   Guide() {
   }
@@ -44,9 +49,10 @@ public class Guide implements View.OnKeyListener, View.OnClickListener {
     mOnVisibilityChangedListener = listener;
   }
 
+
   /**
    * 显示该遮罩, <br>
-   * 外部借助{@link com.blog.www.guideview.GuideBuilder}
+   * 外部借助{@link GuideBuilder}
    * 创建好一个Guide实例后，使用该实例调用本函数遮罩才会显示
    *
    * @param activity 目标Activity
@@ -57,6 +63,12 @@ public class Guide implements View.OnKeyListener, View.OnClickListener {
     }
     ViewGroup content = (ViewGroup) activity.findViewById(android.R.id.content);
     if (mMaskView.getParent() == null) {
+      for (int i = 0; i < content.getChildCount(); i++) {
+        View view = content.getChildAt(i);
+        if (view instanceof MaskView) {
+          content.removeView(view);
+          }
+      }
       content.addView(mMaskView);
       if (mConfiguration.mEnterAnimationId != -1) {
         Animation anim = AnimationUtils.loadAnimation(activity, mConfiguration.mEnterAnimationId);
@@ -110,10 +122,11 @@ public class Guide implements View.OnKeyListener, View.OnClickListener {
 
         @Override public void onAnimationEnd(Animation animation) {
           vp.removeView(mMaskView);
+          onDestroy();
           if (mOnVisibilityChangedListener != null) {
             mOnVisibilityChangedListener.onDismiss();
+            mOnVisibilityChangedListener = null;
           }
-          onDestroy();
         }
 
         @Override public void onAnimationRepeat(Animation animation) {
@@ -123,10 +136,11 @@ public class Guide implements View.OnKeyListener, View.OnClickListener {
       mMaskView.startAnimation(anim);
     } else {
       vp.removeView(mMaskView);
+      onDestroy();
       if (mOnVisibilityChangedListener != null) {
         mOnVisibilityChangedListener.onDismiss();
+        mOnVisibilityChangedListener = null;
       }
-      onDestroy();
     }
   }
 
@@ -138,6 +152,7 @@ public class Guide implements View.OnKeyListener, View.OnClickListener {
   }
 
   private MaskView onCreateView(Activity activity) {
+
     ViewGroup content = (ViewGroup) activity.findViewById(android.R.id.content);
     // ViewGroup content = (ViewGroup) activity.getWindow().getDecorView();
     MaskView maskView = new MaskView(activity);
@@ -184,20 +199,25 @@ public class Guide implements View.OnKeyListener, View.OnClickListener {
         e.printStackTrace();
       }
     }
-    // if (content != null) {
-    // int[] loc = new int[2];
-    // content.getLocationInWindow(loc);
-    // parentX = loc[0];
-    // parentY = loc[1];
-    // }
+//     if (content != null) {
+//     int[] locs = new int[2];
+//     content.getLocationInWindow(locs);
+//     parentX = locs[0];
+//     parentY = locs[1];
+//     }
+    if (mConfiguration.mRect != null) {
+      maskView.setTargetRect(mConfiguration.mRect);
+    }else {
 
-    if (mConfiguration.mTargetView != null) {
-      maskView.setTargetRect(Common.getViewAbsRect(mConfiguration.mTargetView, parentX, parentY));
-    } else {
-      // Gets the target view's abs rect
-      View target = activity.findViewById(mConfiguration.mTargetViewId);
-      if (target != null) {
-        maskView.setTargetRect(Common.getViewAbsRect(target, parentX, parentY));
+      if (mConfiguration.mTargetView != null) {
+
+        maskView.setTargetRect(Common.getViewAbsRect(mConfiguration.mTargetView, parentX, parentY));
+      } else {
+        // Gets the target view's abs rect
+        View target = activity.findViewById(mConfiguration.mTargetViewId);
+        if (target != null) {
+          maskView.setTargetRect(Common.getViewAbsRect(target, parentX, parentY));
+        }
       }
     }
 
@@ -215,7 +235,9 @@ public class Guide implements View.OnKeyListener, View.OnClickListener {
 
     // Adds the components to the mask view.
     for (Component c : mComponents) {
-      maskView.addView(Common.componentToView(activity.getLayoutInflater(), c));
+      View view=Common.componentToView(activity.getLayoutInflater(), c);
+      view.setOnClickListener(this);
+      maskView.addView(view);
     }
 
     return maskView;
@@ -224,7 +246,6 @@ public class Guide implements View.OnKeyListener, View.OnClickListener {
   private void onDestroy() {
     mConfiguration = null;
     mComponents = null;
-    mOnVisibilityChangedListener = null;
     mMaskView.removeAllViews();
     mMaskView = null;
   }
@@ -242,8 +263,14 @@ public class Guide implements View.OnKeyListener, View.OnClickListener {
   }
 
   @Override public void onClick(View v) {
+
     if (mConfiguration != null && mConfiguration.mAutoDismiss) {
+
       dismiss();
     }
+  }
+
+  public void setTag(int tag) {
+    this.tag = tag;
   }
 }

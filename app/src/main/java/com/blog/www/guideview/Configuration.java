@@ -1,5 +1,6 @@
 package com.blog.www.guideview;
 
+import android.graphics.Rect;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
@@ -88,6 +89,7 @@ class Configuration implements Parcelable {
   int mEnterAnimationId = -1;
 
   int mExitAnimationId = -1;
+  public Rect mRect;
 
   @Override public int describeContents() {
     return 0;
