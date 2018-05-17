@@ -1,4 +1,4 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 21
@@ -16,16 +16,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    allprojects {
-        repositories {
+//    allprojects {
+//        repositories {
 //            maven { url 'https://jitpack.io' }
-        }
-    }
+//        }
+//    }
 
 }
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.contrarywind:Android-PickerView:3.2.4'
-
 }
