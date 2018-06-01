@@ -25,7 +25,7 @@ public class SimpleComponent implements Component {
     this.layoutview=layoutview;
   }
 
-  public SimpleComponent(LinearLayout layview, int type){
+  public SimpleComponent(LinearLayout layview,int type){
     if(type==1){
       mLayoutView=layview;
       mtype=type;
