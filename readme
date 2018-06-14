@@ -1,4 +1,0 @@
-1.作为app测试,需要两步
-    一、在build.gradle中调整为apply plugin: 'com.android.application',声明项目属性  ;
-    二、在AndroidMainfest文件中声明主activity;
-2.作为lib上传github,反转上面(1)中的步骤,另外...
