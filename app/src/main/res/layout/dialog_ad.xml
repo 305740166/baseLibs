@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_radius_border_no_content_white_5dp">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:id="@+id/title"
+        android:minWidth="300dp"
+        android:text="您还没有登录!"
+        android:textColor="#777777"
+        android:textSize="14sp"
+        android:gravity="center" />
+
+
+    <LinearLayout
+        android:layout_gravity="center_vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="10dp">
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:text="确 定"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_radius_border_no_content_green" />
+
+    </LinearLayout>
+</LinearLayout>

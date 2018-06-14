@@ -3,4 +3,23 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <item type="drawable" name="top_title_font_color">#ffffff</item>
+    <item type="drawable" name="ltgray">#fff4f4f4</item>
+    <item type="drawable" name="ltyellow">#fffff4db</item>
+    <item type="drawable" name="black">#ff000000</item>
+    <item type="drawable" name="transparent">#00000000</item>
+    <item type="drawable" name="widget_edit_block_bg_normal">@android:color/transparent</item>
+    <item type="drawable" name="transparent_background">#99000000</item>
+    <item type="drawable" name="list_background">#fff4f4f4</item>
+    <item type="drawable" name="namcard_picker_bkg_normal">#ff272727</item>
+    <item type="drawable" name="namcard_picker_bkg_hover">#ff333333</item>
+    <item type="drawable" name="mail_table_title">#ff000000</item>
+    <item type="drawable" name="mail_table_info">#ff999999</item>
+    <color name="deleteDialogBtndel">#151c00</color>
+    <color name="black3">#333c39</color>
+    <color name="red">#FF0000</color>
+
+
+    <drawable name="listviewDivider">#CCCCCC</drawable>
 </resources>
